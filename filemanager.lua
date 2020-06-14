@@ -3,6 +3,10 @@ do
 	FileManager = {}
 	FileManager.__index = FileManager
 
+	local string_byte = string.byte
+	local string_char = string.char
+	local string_sub = string.sub
+
 	local parsers
 	parsers = {
 		["dictionary"] = function(str, obj, idx)
@@ -49,7 +53,7 @@ do
 		end,
 
 		["boolean"] = function(str, obj, idx)
-			return string.sub(str, idx, idx) == "1", idx + 1
+			return string_sub(str, idx, idx) == "1", idx + 1
 		end,
 
 		["string"] = function(str, obj, idx)
@@ -58,12 +62,12 @@ do
 				length, idx = parsers.number(str, nil, idx)
 			end
 
-			return string.sub(str, idx, idx - 1 + length), idx + length
+			return string_sub(str, idx, idx - 1 + length), idx + length
 		end,
 
 		["number"] = function(str, obj, idx)
-			local length = string.byte(str, idx)
-			return tonumber(string.sub(str, idx + 1, idx + length)), idx + 1 + length
+			local length = string_byte(str, idx)
+			return tonumber(string_sub(str, idx + 1, idx + length)), idx + 1 + length
 		end
 	}
 
@@ -125,7 +129,7 @@ do
 
 		["number"] = function(data, obj, str)
 			local encoded = tostring(data)
-			return str .. string.char(#encoded) .. encoded
+			return str .. string_char(#encoded) .. encoded
 		end
 	}
 
